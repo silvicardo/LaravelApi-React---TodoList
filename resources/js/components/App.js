@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import TodoList from './TodoList';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        My Todo List
+      <div className="App d-flex flex-column justify-content-center align-items-center">
+        <h1>Single Page TodoList App</h1>
+        <TodoList />
       </div>
     );
   }
