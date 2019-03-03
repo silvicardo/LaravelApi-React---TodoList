@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//ogni pagina richiesta porta alla pagina app.blade.php
+
+Route::view('/{path?}', 'app');
