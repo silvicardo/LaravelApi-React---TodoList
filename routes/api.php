@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::namespace('Api')->group(function() {
+    //Products
+    Route::get('/todos', 'TodoController@index');
+    Route::post('/todos', 'TodoController@create');
+    Route::get('/todos/{id}', 'TodoController@show');
+    Route::post('/todos/{id}', 'TodoController@update');
+    Route::post('/todos/{id}/delete', 'TodoController@destroy');
 });
