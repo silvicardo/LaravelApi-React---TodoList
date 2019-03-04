@@ -50,19 +50,18 @@ class TodoController extends Controller
 
     public function update(Request $request, $id)
     {
-      $userData = $request->validate([
-        'task'=>'max:50'
-      ]);
 
-      if ((empty($userData['task'])) && (empty($userData['completed']))) {
-       return response()->json(['error' => 'Missing update data']);
-       }
+       $userData = $request->all();
+
+      // if ((empty($userData['task'])) && (empty($userData['completed']))) {
+      //  return response()->json(['error' => 'Missing update data']);
+      //  }
 
        $todoToUpdate = Todo::find($id);
 
-     if(empty($todoToUpdate)) {
-         return response()->json(['error' => 'Todo-ID not found, operation failed']);
-      }
+       if(empty($todoToUpdate)) {
+           return response()->json(['error' => 'Todo-ID not found, operation failed']);
+        }
 
       $todoToUpdate->update($userData);
       return response()->json($todoToUpdate);

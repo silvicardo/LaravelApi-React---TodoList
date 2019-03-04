@@ -61850,12 +61850,14 @@ module.exports = function(module) {
 /*!***********************************!*\
   !*** ./resources/js/apiCaller.js ***!
   \***********************************/
-/*! exports provided: getTodos, destroyTodo */
+/*! exports provided: createTodo, getTodos, updateTodoCompletionStatus, destroyTodo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTodo", function() { return createTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodos", function() { return getTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodoCompletionStatus", function() { return updateTodoCompletionStatus; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyTodo", function() { return destroyTodo; });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -61865,20 +61867,27 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var apiUrl = '/api/todos/';
-function getTodos() {
-  return _getTodos.apply(this, arguments);
-}
+var apiUrl = '/api/todos/'; //CREATE
 
-function _getTodos() {
-  _getTodos = _asyncToGenerator(
+function createTodo(_x) {
+  return _createTodo.apply(this, arguments);
+} //READ
+
+function _createTodo() {
+  _createTodo = _asyncToGenerator(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(todo) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", fetch(apiUrl).then(function (response) {
+            return _context.abrupt("return", fetch(apiUrl, {
+              method: 'post',
+              headers: new Headers({
+                'Content-type': 'application/json'
+              }),
+              body: JSON.stringify(todo)
+            }).then(function (response) {
               //Error Handling
               if (!response.ok) {
                 if (response.status >= 400 && response.status < 500) {
@@ -61906,22 +61915,117 @@ function _getTodos() {
       }
     }, _callee);
   }));
+  return _createTodo.apply(this, arguments);
+}
+
+function getTodos() {
+  return _getTodos.apply(this, arguments);
+} //UPDATE
+
+function _getTodos() {
+  _getTodos = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", fetch(apiUrl).then(function (response) {
+              //Error Handling
+              if (!response.ok) {
+                if (response.status >= 400 && response.status < 500) {
+                  return response.json().then(function (data) {
+                    var err = {
+                      errorMessage: data.message
+                    };
+                    throw err;
+                  });
+                } else {
+                  var err = {
+                    errorMessage: 'Server off, retry later'
+                  };
+                }
+              } //Caso success
+
+
+              return response.json();
+            }));
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
   return _getTodos.apply(this, arguments);
 }
 
-function destroyTodo(_x) {
+function updateTodoCompletionStatus(_x2) {
+  return _updateTodoCompletionStatus.apply(this, arguments);
+} //DESTROY
+
+function _updateTodoCompletionStatus() {
+  _updateTodoCompletionStatus = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(todo) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            return _context3.abrupt("return", fetch(apiUrl + todo.id, {
+              method: 'post',
+              headers: new Headers({
+                'Content-type': 'application/json'
+              }),
+              body: JSON.stringify({
+                completed: !todo.completed
+              })
+            }).then(function (response) {
+              console.log(response); //Error Handling
+
+              if (!response.ok) {
+                if (response.status >= 400 && response.status < 500) {
+                  return response.json().then(function (data) {
+                    var err = {
+                      errorMessage: data.message
+                    };
+                    throw err;
+                  });
+                } else {
+                  var err = {
+                    errorMessage: 'Server off, retry later'
+                  };
+                }
+              } //Caso deletion success
+
+
+              return response.json();
+            }));
+
+          case 1:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _updateTodoCompletionStatus.apply(this, arguments);
+}
+
+function destroyTodo(_x3) {
   return _destroyTodo.apply(this, arguments);
 }
 
 function _destroyTodo() {
   _destroyTodo = _asyncToGenerator(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(id) {
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            return _context2.abrupt("return", fetch(apiUrl + id + '/delete', {
+            return _context4.abrupt("return", fetch(apiUrl + id + '/delete', {
               method: 'post'
             }).then(function (response) {
               //Error Handling
@@ -61946,10 +62050,10 @@ function _destroyTodo() {
 
           case 1:
           case "end":
-            return _context2.stop();
+            return _context4.stop();
         }
       }
-    }, _callee2);
+    }, _callee4);
   }));
   return _destroyTodo.apply(this, arguments);
 }
@@ -62089,8 +62193,10 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "App d-flex flex-column justify-content-center align-items-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Single Page TodoList App"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+        className: "App d-flex flex-column align-items-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+        className: "my-5"
+      }, "Single Page TodoList App"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_2__["default"], null));
     }
   }]);
 
@@ -62099,6 +62205,130 @@ function (_Component) {
 
 /* harmony default export */ __webpack_exports__["default"] = (App);
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('app'));
+
+/***/ }),
+
+/***/ "./resources/js/components/TodoEditForm.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/TodoEditForm.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var TodoEditForm =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(TodoEditForm, _Component);
+
+  function TodoEditForm(props) {
+    var _this;
+
+    _classCallCheck(this, TodoEditForm);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TodoEditForm).call(this, props));
+    _this.state = {
+      task: '',
+      completed: false
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.showTodoList = _this.showTodoList.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(TodoEditForm, [{
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      console.log('handleSumbmit del form');
+      this.props.onSubmit(_objectSpread({}, this.state));
+      this.setState({
+        task: '',
+        completed: false
+      });
+    }
+  }, {
+    key: "showTodoList",
+    value: function showTodoList(e) {
+      e.preventDefault;
+      this.props.onBackToList();
+      this.setState({
+        task: '',
+        completed: false
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      console.log('form state', this.state);
+      var _this$props = this.props,
+          onSubmit = _this$props.onSubmit,
+          onBackToList = _this$props.onBackToList,
+          style = _this$props.style;
+      var task = this.state.task;
+      console.log('task', task);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "text-center",
+        style: style
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "mb-3",
+        onSubmit: this.handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "task"
+      }, "Enter a new task: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "form-control",
+        placeholder: "New Todo",
+        name: "task",
+        value: task,
+        onChange: function onChange(e) {
+          _this2.setState(_defineProperty({}, e.target.name, e.target.value));
+        }
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "submit",
+        className: "btn btn-success",
+        value: "Submit Todo"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.showTodoList,
+        className: "btn btn-warning"
+      }, "Go back"));
+    }
+  }]);
+
+  return TodoEditForm;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (TodoEditForm);
 
 /***/ }),
 
@@ -62117,9 +62347,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var TodoItem = function TodoItem(_ref) {
   var task = _ref.task,
-      onDelete = _ref.onDelete;
+      listItemClass = _ref.listItemClass,
+      itemStyle = _ref.itemStyle,
+      onDelete = _ref.onDelete,
+      toggleCompletion = _ref.toggleCompletion;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-    className: "list-group-item"
+    className: "list-group-item",
+    style: itemStyle,
+    onClick: toggleCompletion
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: "mr-5"
   }, task), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -62147,12 +62382,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _TodoItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TodoItem */ "./resources/js/components/TodoItem.js");
-/* harmony import */ var _apiCaller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../apiCaller */ "./resources/js/apiCaller.js");
+/* harmony import */ var _TodoEditForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TodoEditForm */ "./resources/js/components/TodoEditForm.js");
+/* harmony import */ var _apiCaller__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../apiCaller */ "./resources/js/apiCaller.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -62166,13 +62414,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -62190,10 +62439,14 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TodoList).call(this, props));
     _this.state = {
-      todos: []
+      todos: [],
+      isAddingNew: false
     };
+    _this.manageCompletionDecoration = _this.manageCompletionDecoration.bind(_assertThisInitialized(_this));
+    _this.backFromForm = _this.backFromForm.bind(_assertThisInitialized(_this));
     return _this;
-  }
+  } //CRUD FUNCTIONS
+
 
   _createClass(TodoList, [{
     key: "componentWillMount",
@@ -62206,21 +62459,28 @@ function (_Component) {
       var _getAllTodos = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var todos;
+        var _this2 = this;
+
+        var apiTodos, todos;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _apiCaller__WEBPACK_IMPORTED_MODULE_3__["getTodos"]();
+                return _apiCaller__WEBPACK_IMPORTED_MODULE_4__["getTodos"]();
 
               case 2:
-                todos = _context.sent;
+                apiTodos = _context.sent;
+                todos = apiTodos.map(function (todo) {
+                  return _objectSpread({}, todo, {
+                    liStyle: _this2.manageCompletionDecoration(todo.completed)
+                  });
+                });
                 this.setState({
                   todos: todos
                 });
 
-              case 4:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -62235,18 +62495,54 @@ function (_Component) {
       return getAllTodos;
     }()
   }, {
-    key: "deleteTodo",
+    key: "addNewTodo",
     value: function () {
-      var _deleteTodo = _asyncToGenerator(
+      var _addNewTodo = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(id) {
-        var todos;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(todo) {
+        var newTodo;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return _apiCaller__WEBPACK_IMPORTED_MODULE_3__["destroyTodo"](id);
+                console.log('salvataggio', todo);
+                _context2.next = 3;
+                return _apiCaller__WEBPACK_IMPORTED_MODULE_4__["createTodo"](todo);
+
+              case 3:
+                newTodo = _context2.sent;
+                this.setState({
+                  todos: [].concat(_toConsumableArray(this.state.todos), [newTodo]),
+                  isAddingNew: false
+                });
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function addNewTodo(_x) {
+        return _addNewTodo.apply(this, arguments);
+      }
+
+      return addNewTodo;
+    }()
+  }, {
+    key: "deleteTodo",
+    value: function () {
+      var _deleteTodo = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(id) {
+        var todos;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _apiCaller__WEBPACK_IMPORTED_MODULE_4__["destroyTodo"](id);
 
               case 2:
                 todos = this.state.todos.filter(function (todo) {
@@ -62258,34 +62554,131 @@ function (_Component) {
 
               case 4:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
-      function deleteTodo(_x) {
+      function deleteTodo(_x2) {
         return _deleteTodo.apply(this, arguments);
       }
 
       return deleteTodo;
     }()
   }, {
+    key: "toggleTodoCompletion",
+    value: function () {
+      var _toggleTodoCompletion = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(todo) {
+        var _this3 = this;
+
+        var updatedTodo, todos;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _apiCaller__WEBPACK_IMPORTED_MODULE_4__["updateTodoCompletionStatus"](todo);
+
+              case 2:
+                updatedTodo = _context4.sent;
+                console.log('todo aggiornato', updatedTodo);
+                todos = _toConsumableArray(this.state.todos).map(function (todo) {
+                  return updatedTodo.id == todo.id ? _objectSpread({}, todo, {
+                    completed: !todo.completed,
+                    liStyle: _this3.manageCompletionDecoration(!todo.completed)
+                  }) : todo;
+                });
+                this.setState({
+                  todos: todos
+                }, function () {
+                  console.log('todos after update ', _this3.state.todos);
+                });
+
+              case 6:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function toggleTodoCompletion(_x3) {
+        return _toggleTodoCompletion.apply(this, arguments);
+      }
+
+      return toggleTodoCompletion;
+    }() //STYLE FUNCTIONS
+
+  }, {
+    key: "manageCompletionDecoration",
+    value: function manageCompletionDecoration(completed) {
+      console.log('todocompleted = ', completed);
+
+      if (completed === 1 || completed === true) {
+        return 'line-through';
+      } else if (completed === 0 || completed === false) {
+        return 'none';
+      } else {
+        console.log('todocompleted diverso da 1 o 0 ', completed);
+      }
+    }
+  }, {
+    key: "backFromForm",
+    value: function backFromForm() {
+      console.log('back from form');
+      this.setState({
+        isAddingNew: false
+      });
+    } //RENDER METHOD
+
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this4 = this;
 
-      var todos = this.state.todos.map(function (todo) {
+      var _this$state = this.state,
+          isAddingNew = _this$state.isAddingNew,
+          todos = _this$state.todos;
+      var allTodos = todos.map(function (todo) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_TodoItem__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
           key: todo.id
         }, todo, {
-          onDelete: _this2.deleteTodo.bind(_this2, todo.id)
+          itemStyle: {
+            textDecoration: todo.liStyle
+          },
+          onDelete: _this4.deleteTodo.bind(_this4, todo.id),
+          toggleCompletion: _this4.toggleTodoCompletion.bind(_this4, todo)
         }));
       });
-      console.log(todos);
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+      return [react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        key: "0",
+        type: "button",
+        style: {
+          display: !isAddingNew ? 'inline-block' : 'none'
+        },
+        onClick: function onClick() {
+          _this4.setState({
+            isAddingNew: true
+          });
+        },
+        className: "btn btn-primary my-5"
+      }, "Add New Todo"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_TodoEditForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        key: "1",
+        style: {
+          display: !isAddingNew ? 'none' : 'block'
+        },
+        onSubmit: this.addNewTodo.bind(this),
+        onBackToList: this.backFromForm
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+        key: "2",
+        style: {
+          display: isAddingNew ? 'none' : 'block'
+        },
         className: "text-center list-group"
-      }, todos);
+      }, allTodos)];
     }
   }]);
 
